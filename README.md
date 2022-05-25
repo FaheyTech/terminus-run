@@ -13,6 +13,7 @@ Provides a web interface for securely running Terminus CLI commands against your
 - Select the Action on the left hand side.
 - Hit "Run workflow" on the right hand side.
 - You can provide the inputs, and it will run. Check the progress in the Actions tab.
+![Screenshot of repo running the action](static/Actions_·_FaheyTech_terminus-run.png)
 
 Keep in mind - You can also trigger these programmatically with the Github API! The possibilities are endless! You essentially send a JSON payload with your inputs, e.g.
 ```
