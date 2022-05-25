@@ -26,7 +26,7 @@ jobs:
       run: |
         mkdir -p /tmp/terminus
         cd /tmp/terminus
-        composer require pantheon-systems/terminus:2.6.1
+        composer require pantheon-systems/terminus:3.0.7
         echo "/tmp/terminus/vendor/bin/" >> $GITHUB_PATH
         vendor/bin/terminus auth:login --machine-token=${{ secrets.PANTHEON_MACHINE_TOKEN }}
     - name: Run terminus command
