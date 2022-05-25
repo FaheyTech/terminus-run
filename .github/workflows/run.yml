@@ -1,0 +1,37 @@
+name: Run terminus command
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'The command to run - e.g. - `terminus drush mysite.live st`'
+        required: true
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:  
+    - uses: actions/checkout@v2
+    - uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        config: |
+          Host *
+            StrictHostKeyChecking=no
+            PasswordAuthentication no
+            PubkeyAuthentication yes
+          Host *.drush.in
+            StrictHostKeyChecking no
+        known_hosts: |
+          127.0.0.1
+    - name: Install terminus and plugins
+      run: |
+        mkdir -p /tmp/terminus
+        cd /tmp/terminus
+        composer require pantheon-systems/terminus:2.6.1
+        echo "/tmp/terminus/vendor/bin/" >> $GITHUB_PATH
+        vendor/bin/terminus auth:login --machine-token=${{ secrets.PANTHEON_MACHINE_TOKEN }}
+    - name: Run terminus command
+      id: run
+      env:
+        command: ${{ github.event.inputs.command }}
+      run: |
+        output=$(eval "$command")
